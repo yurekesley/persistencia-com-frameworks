@@ -15,6 +15,13 @@ import lombok.Data;
 @Data
 public class Vet {
 
+	protected Vet() { }
+	
+	public Vet(String firshName, String lastName) {
+		this.firshName = firshName;
+		this.lastName = lastName;
+	}
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

@@ -4,7 +4,9 @@ import java.lang.reflect.ParameterizedType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
+@Transactional
 public abstract class DAO<T> {
 
 	@PersistenceContext
