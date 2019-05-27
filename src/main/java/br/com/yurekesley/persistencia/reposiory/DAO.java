@@ -14,6 +14,7 @@ public abstract class DAO<T> {
 
 	private Class<T> clazz;
 
+	@SuppressWarnings("unchecked")
 	public DAO() {
 		this.clazz = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
