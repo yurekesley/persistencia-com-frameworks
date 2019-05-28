@@ -36,11 +36,12 @@ public class Cliente extends Modelo {
 	
 	@Column
 	@Enumerated(EnumType.STRING)
-	private TipoCliente tipo;
+	private TipoCliente tipo = TipoCliente.FISICA;
 	
 	@ManyToOne
 	@JoinColumn(name = "agencia_id", nullable = false)
 	private Agencia agencia;
+	
 	public String getNome() {
 		return nome;
 	}

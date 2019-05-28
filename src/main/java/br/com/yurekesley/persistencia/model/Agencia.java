@@ -19,28 +19,26 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import br.com.yurekesley.persistencia.Modelo;
 import lombok.EqualsAndHashCode;
 
-
 @Entity
 @Table(name = "TBL_AGENCIAS")
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Cliente.class)
 public class Agencia extends Modelo {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@SequenceGenerator(name = "agencias_id_seq", sequenceName = "agencias_id_seq", initialValue = 1, allocationSize = 1)
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "agencias_id_seq")
-	private Long id;	
+	private Long id;
 
 	@Column
 	private String codigo;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "agencia", cascade = CascadeType.PERSIST)
 	private List<Cliente> clientes;
-	
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -58,13 +56,16 @@ public class Agencia extends Modelo {
 	}
 
 	public List<Cliente> getClientes() {
+
+		for (Cliente cliente : this.clientes) {
+			cliente.setAgencia(this);
+		}
+
 		return clientes;
 	}
 
 	public void setClientes(List<Cliente> clientes) {
 		this.clientes = clientes;
 	}
-
-
 
 }
