@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.yurekesley.persistencia.exeption.ContaInvalida;
+import br.com.yurekesley.persistencia.model.Agencia;
 import br.com.yurekesley.persistencia.model.Cliente;
 import br.com.yurekesley.persistencia.model.Movimentacao;
 import br.com.yurekesley.persistencia.model.TipoMovimentacao;
@@ -70,8 +71,12 @@ public class MovimentacaoService extends GenericService<Movimentacao, Long> {
 
 	}
 
-	public List<Movimentacao> extrato(Cliente cliente) {		
+	public List<Movimentacao> extrato(Cliente cliente) {
 		return movimentacaoRepository.extrato(cliente.getId());
+	}
+
+	public List<Movimentacao> relatorioPorAgencia(Agencia agencia) {
+		return movimentacaoRepository.relatorioPorAgencia(agencia.getId());
 	}
 
 }

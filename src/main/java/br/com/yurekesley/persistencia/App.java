@@ -39,6 +39,12 @@ public class App {
 		SpringApplication.run(App.class, args);
 	}
 
+	/**
+	 * @return
+	 */
+	/**
+	 * @return
+	 */
 	@Bean
 	public CommandLineRunner runner() {
 		return ((args -> {
@@ -74,6 +80,10 @@ public class App {
 			ContaCorrente ccKesley = new ContaCorrente(agencia, kesley, "2222222222222");
 			ccKesley.setSaldo(5.000);
 			contaCorrenteService.save(ccKesley);
+			
+			Movimentacao deposito2 = new Movimentacao(TipoMovimentacao.DEPOSITO, ccKesley, 12.000);
+			movimentacaoService.deposito(deposito2);
+			
 
 			Movimentacao transferencia = new Movimentacao(TipoMovimentacao.TRANSFERENCIA, ccYure, ccKesley, 4.000);
 			movimentacaoService.transferencia(transferencia);
@@ -81,12 +91,30 @@ public class App {
 			Cliente cliente = this.clienteService.findById(1l);
 
 			List<Movimentacao> movimentacoes = movimentacaoService.extrato(cliente);
-
+			
+			System.out.println("\n\n");
+			System.out.println("XXXXXXXXXXXXXXXX EXTRATO CLIENTE YURE");
+			
+			System.out.println("\n");
 			for (Movimentacao movimentacao : movimentacoes) {
 
 				System.out.println(movimentacao);
 
 			}
+			
+			System.out.println("\n\n");
+			System.out.println("XXXXXXXXXXXXXXXX RELATORIO DA AGÊNCIA 0001");
+						
+			List<Movimentacao> movimentacoesDaAgencia = movimentacaoService.relatorioPorAgencia(agencia);
+			
+			
+			System.out.println("\n");
+			for (Movimentacao movimentacao : movimentacoesDaAgencia) {
+
+				System.out.println(movimentacao);
+
+			}
+			
 
 		}));
 

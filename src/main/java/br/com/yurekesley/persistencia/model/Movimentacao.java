@@ -49,12 +49,11 @@ public class Movimentacao extends Modelo {
 
 	private double valor;
 
-
 	public Movimentacao() {
 	}
 
 	public Movimentacao(TipoMovimentacao tipoMovimentacao, ContaCorrente contaOrigem, ContaCorrente contaDestino,
-		double valor) {
+			double valor) {
 		this.tipoMovimentacao = tipoMovimentacao;
 		this.contaOrigem = contaOrigem;
 		this.contaDestino = contaDestino;
@@ -98,14 +97,12 @@ public class Movimentacao extends Modelo {
 	public void setValor(double valor) {
 		this.valor = valor;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		
-		return 	"NOME: " + this.getContaOrigem().getCliente().getNome() +
-				"\n AGÊNCIA: " + this.getContaOrigem().getAgencia()+
-				"\n";
+		return "NOME: "+ this.getContaOrigem().getCliente().getNome() +
+			    " TIPO: "+ this.tipoMovimentacao + 
+			    " VALOR: "+ this.getValor() + "\n";
 	}
-	
+
 }

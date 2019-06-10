@@ -15,4 +15,8 @@ public interface IMovimentacao extends CrudRepository<Movimentacao, Long>{
 	
 	@Query("FROM Movimentacao m WHERE m.contaOrigem.cliente.id = :clienteID ")
 	public List<Movimentacao> extrato(@Param("clienteID") Long clienteID);
+	
+	
+	@Query("FROM Movimentacao m WHERE m.contaOrigem.agencia.id = :agenciaID ")
+	public List<Movimentacao> relatorioPorAgencia(@Param("agenciaID") Long agenciaID);
 }
