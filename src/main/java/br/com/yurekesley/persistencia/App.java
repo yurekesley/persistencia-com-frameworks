@@ -1,6 +1,6 @@
 package br.com.yurekesley.persistencia;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,9 +12,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import br.com.yurekesley.persistencia.model.Agencia;
 import br.com.yurekesley.persistencia.model.Cliente;
 import br.com.yurekesley.persistencia.model.ContaCorrente;
+import br.com.yurekesley.persistencia.model.Movimentacao;
+import br.com.yurekesley.persistencia.model.TipoMovimentacao;
 import br.com.yurekesley.persistencia.service.AgenciaService;
 import br.com.yurekesley.persistencia.service.ClienteService;
 import br.com.yurekesley.persistencia.service.ContaCorrenteService;
+import br.com.yurekesley.persistencia.service.MovimentacaoService;
 
 @SpringBootApplication
 @EnableTransactionManagement
@@ -25,9 +28,12 @@ public class App {
 
 	@Autowired
 	private ClienteService clienteService;
-	
-	@Autowired 
+
+	@Autowired
 	private ContaCorrenteService contaCorrenteService;
+
+	@Autowired
+	private MovimentacaoService movimentacaoService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(App.class, args);
@@ -40,7 +46,7 @@ public class App {
 			Agencia agencia = new Agencia();
 			agencia.setCodigo("0001");
 			agenciaService.save(agencia);
-			
+
 			Cliente yure = new Cliente();
 			yure.setNome("Yure");
 			yure.setAgencia(agencia);
@@ -51,26 +57,39 @@ public class App {
 			kesley.setAgencia(agencia);
 			clienteService.save(kesley);
 
-			ContaCorrente ccYure = new ContaCorrente();
-			ContaCorrente ccKesley = new ContaCorrente();
+			// Transações na conta 1111111111111
 
-			ccYure.setCliente(yure);
-			ccYure.setAgencia(agencia);
-			ccYure.setSaldo(new BigDecimal(10.000));
+			ContaCorrente ccYure = new ContaCorrente(agencia, yure, "1111111111111");
+			ccYure.setSaldo(10.000);
 			contaCorrenteService.save(ccYure);
-			
-			ccKesley.setCliente(kesley);
-			ccKesley.setAgencia(agencia);
-			ccKesley.setSaldo(new BigDecimal(5.000));
+
+			Movimentacao saque = new Movimentacao(TipoMovimentacao.SAQUE, ccYure, 2.000);
+			movimentacaoService.saque(saque);
+
+			Movimentacao deposito = new Movimentacao(TipoMovimentacao.DEPOSITO, ccYure, 4.000);
+			movimentacaoService.deposito(deposito);
+
+			// Transações na conta 2222222222222
+
+			ContaCorrente ccKesley = new ContaCorrente(agencia, kesley, "2222222222222");
+			ccKesley.setSaldo(5.000);
 			contaCorrenteService.save(ccKesley);
 
-			
-			
-			
-			// cc.s
+			Movimentacao transferencia = new Movimentacao(TipoMovimentacao.TRANSFERENCIA, ccYure, ccKesley, 4.000);
+			movimentacaoService.transferencia(transferencia);
 
+			Cliente cliente = this.clienteService.findById(1l);
+
+			List<Movimentacao> movimentacoes = movimentacaoService.extrato(cliente);
+
+			for (Movimentacao movimentacao : movimentacoes) {
+
+				System.out.println(movimentacao);
+
+			}
 
 		}));
+
 	}
 
 }

@@ -1,7 +1,5 @@
 package br.com.yurekesley.persistencia.model;
 
-import java.math.BigDecimal;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "TBL_CONTAS_CORRENTE")
 @EqualsAndHashCode(callSuper = false)
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Cliente.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = ContaCorrente.class)
 public class ContaCorrente extends Modelo {
 
 	private static final long serialVersionUID = 1L;
@@ -35,7 +33,7 @@ public class ContaCorrente extends Modelo {
 	private String numero;
 
 	@Column
-	private BigDecimal saldo;
+	private Double saldo;
 
 	@OneToOne
 	@JoinColumn(name = "cliente_id", nullable = false)
@@ -44,7 +42,15 @@ public class ContaCorrente extends Modelo {
 	@OneToOne
 	@JoinColumn(name = "agencia_id", nullable = false)
 	private Agencia agencia;
-
+	
+	public ContaCorrente() {}
+	
+	public ContaCorrente(Agencia agencia, Cliente cliente, String numero) {
+		this.agencia = agencia;
+		this.cliente = cliente;
+		this.numero = numero;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -53,11 +59,11 @@ public class ContaCorrente extends Modelo {
 		this.id = id;
 	}
 
-	public BigDecimal getSaldo() {
+	public Double getSaldo() {
 		return saldo;
 	}
 
-	public void setSaldo(BigDecimal saldo) {
+	public void setSaldo(Double saldo) {
 		this.saldo = saldo;
 	}
 
@@ -76,20 +82,4 @@ public class ContaCorrente extends Modelo {
 	public void setAgencia(Agencia agencia) {
 		this.agencia = agencia;
 	}
-
-	public void debitar(BigDecimal valor) throws Exception {
-
-		if (this.saldo.compareTo(valor) == -1) {
-			throw new Exception("Saldo Insuficiente !!");
-		}
-
-		this.saldo = this.saldo.subtract(valor);
-
-	}
-
-	public void depositar(BigDecimal valor) {
-		this.saldo = this.saldo.add(valor);
-
-	}
-
 }

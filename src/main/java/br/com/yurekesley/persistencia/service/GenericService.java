@@ -109,5 +109,9 @@ public abstract class GenericService<T, ID> implements IGenericService<T, ID> {
 		}
 		return null;
 	}
+	
+	public CrudRepository<T, ID> getRepository() {
+		return repository;
+	}
 
 }

@@ -36,7 +36,7 @@ public class Agencia extends Modelo {
 	private String codigo;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "agencia", cascade = CascadeType.PERSIST)
+	@OneToMany(mappedBy = "agencia", cascade = CascadeType.PERSIST, orphanRemoval = true)
 	private List<Cliente> clientes;
 
 	public Long getId() {
